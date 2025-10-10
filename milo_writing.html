@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writing | Milo Beckman</title>
+    <link rel="stylesheet" href="./milo_styles.css">
+</head>
+<body>
+    <nav>
+        <h1><a href="index.html">Milo Beckman</a></h1>
+        <div class="hamburger">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <ul>
+            <li><a href="index.html" class="active">About</a></li>
+            <li><a href="milo_book.html">Math Without Numbers</a></li>
+            <li><a href="milo_writing.html">Writing</a></li>
+            <li><a href="milo_interviews.html">Interviews & Press</a></li>
+            <li><a href="milo_more.html">More Stuff</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="writing-layout">
+            <div class="writing-section">
+                <h2>Data Journalism</h2>
+                <ul>
+                    <li><a href="#">"We're Edging Closer to Nuclear War"</a></li>
+                    <li><a href="#">"Religion and Education Explain the White Vote"</a></li>
+                    <li><a href="#">"Which Terrorist Attacks Are Ignored By The U.S. Media?"</a></li>
+                    <li><a href="#">"Clinton Leads Trump In The Newspaper Endorsement Race"</a></li>
+                    <li><a href="#">"A Sanders Comeback Would Be Unprecedented"</a></li>
+                    <li><a href="#">"These Are The Phrases Sanders And Clinton Repeat Most"</a></li>
+                    <li><a href="#">"These Are The Phrases Each GOP Candidate Repeats Most"</a></li>
+                </ul>
+            </div>
+
+            <div class="writing-section">
+                <h2>Essays</h2>
+                <ul>
+                    <li><a href="#">"Opt Out"</a></li>
+                    <li><a href="#">"Don't Major"</a></li>
+                    <li><a href="#">"Why I Write Bad"</a></li>
+                    <li><a href="#">"The Gospel of Rational Debate"</a></li>
+                    <li><a href="#">"Nate Silver Is Not a Witch"</a></li>
+                </ul>
+            </div>
+
+            <div class="writing-section">
+                <h2>Romy Asks</h2>
+                <ul>
+                    <li><a href="#">"What was before the Big Bang?"</a></li>
+                    <li><a href="#">"What was the starting point of evolution?"</a></li>
+                    <li><a href="#">"How was money originally distributed?"</a></li>
+                    <li><a href="#">"What "era" are we in and why?"</a></li>
+                    <li><a href="#">"Why is world population growing so fast?"</a></li>
+                    <li><a href="#">"How am I able to ask this question?"</a></li>
+                    <li><a href="#">"Why am I so tired?"</a></li>
+                    <li><a href="#">"What does politics change in MY life?"</a></li>
+                    <li><a href="#">"What is time?"</a></li>
+                    <li><a href="#">"How does WiFi work?"</a></li>
+                    <li><a href="#">"What does math not explain?"</a></li>
+                    <li><a href="#">"Why do humans like some things more than other things.. ?"</a></li>
+                    <li><a href="#">"How is programming programmed?"</a></li>
+                    <li><a href="#">"What was I before I was born?"</a></li>
+                    <li><a href="#">"How do airplanes work?"</a></li>
+                    <li><a href="#">"What is color?"</a></li>
+                    <li><a href="#">"Why are politicians constantly arguing.. ?"</a></li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const navUl = document.querySelector('nav ul');
+
+        hamburger.addEventListener('click', () => {
+            navUl.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
