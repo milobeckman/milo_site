@@ -1,0 +1,2 @@
+﻿I'd like to add an email list signup page called "Updates" where people can enter First Name, Last Name, Email and press a button and it gets added to a spreadsheet somewhere.
+I imagine there's a simple email list tool that we can use for this

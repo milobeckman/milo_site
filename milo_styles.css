@@ -16,7 +16,6 @@ body {
 /* Navigation */
 nav {
     padding: 2rem 1.5rem;
-    border-right: 1px solid #ddd;
     height: 100vh;
     position: fixed;
     width: 250px;
@@ -101,8 +100,14 @@ main {
     }
 
     .about-content {
-        grid-template-columns: minmax(200px, 300px) 1fr; /* Adjust image column width */
+        grid-template-columns: minmax(300px, 400px) 1fr; /* Adjust image column width */
         align-items: center; /* Vertically center image and text */
+    }
+
+
+
+    .book-layout {
+        grid-template-columns: 1fr 2fr;
     }
 
     .about-content .image-section img {
@@ -149,14 +154,13 @@ main {
 }
 
 .book-links a {
-    color: #0066cc;
+    color: #333;
     text-decoration: none;
-    transition: opacity 0.2s ease;
+    transition: color 0.2s ease;
 }
 
 .book-links a:hover {
-    opacity: 0.7;
-    text-decoration: underline;
+    color: #888;
 }
 
 .book-description {
@@ -207,7 +211,8 @@ main {
 .writing-layout {
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: 2rem;
+    gap: 1rem;
+    align-items: baseline;
 }
 
 .writing-layout .writing-section,
@@ -225,7 +230,6 @@ main {
 .more-section h2 {
     font-size: 1.5rem;
     font-weight: 600;
-    margin-bottom: 1rem;
     grid-column: 1;
     text-align: right;
     padding-right: 2rem;
@@ -243,14 +247,13 @@ main {
 }
 
 .writing-section a {
-    color: #0066cc;
+    color: #333;
     text-decoration: none;
-    transition: opacity 0.2s ease;
+    transition: color 0.2s ease;
 }
 
 .writing-section a:hover {
-    opacity: 0.7;
-    text-decoration: underline;
+    color: #888;
 }
 
 /* Interviews Page Styles */
@@ -274,14 +277,13 @@ main {
 }
 
 .interviews-section a {
-    color: #0066cc;
+    color: #333;
     text-decoration: none;
-    transition: opacity 0.2s ease;
+    transition: color 0.2s ease;
 }
 
 .interviews-section a:hover {
-    opacity: 0.7;
-    text-decoration: underline;
+    color: #888;
 }
 
 /* More Stuff Page Styles */
@@ -304,14 +306,13 @@ main {
 }
 
 .more-section a {
-    color: #0066cc;
+    color: #333;
     text-decoration: none;
-    transition: opacity 0.2s ease;
+    transition: color 0.2s ease;
 }
 
 .more-section a:hover {
-    opacity: 0.7;
-    text-decoration: underline;
+    color: #888;
 }
 
 /* Single Column Layout for Writing/Interviews/More */
