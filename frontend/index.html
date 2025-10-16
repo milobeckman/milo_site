@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milo Beckman</title>
+    <link rel="stylesheet" href="./milo_styles.css">
+</head>
+<body>
+    <nav>
+        <h1><a href="index.html">Milo Beckman</a></h1>
+        <div class="hamburger">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <ul>
+            <li><a href="index.html" class="active">About</a></li>
+            <li><a href="milo_book.html">Math Without Numbers</a></li>
+            <li><a href="milo_writing.html">Writing</a></li>
+            <li><a href="milo_interviews.html">Interviews & Press</a></li>
+            <li><a href="milo_more.html">More Stuff</a></li>
+            <li><a href="updates.html">Updates</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="content-wrapper about-content">
+            <div class="image-section">
+                <img src="images/milophoto.jpg" alt="Milo Beckman">
+            </div>
+            <div class="text-section">
+                <p class="bio-label">Bio:</p>
+                <p>Milo Beckman is a writer, educator, and author of the book Math Without Numbers, an illustrated tour of dimensions, infinity and more (Penguin, 2022). Born in Manhattan, Milo began taking math classes at Stuyvesant High School at age eight, was captain of the New York City Math Team by age thirteen, and started attending Harvard at age fifteen, but he thinks you don't need any of these qualifications to enjoy math. His diverse projects and independent research have been featured in the New York Times, Good Morning America, the Huffington Post, the Economist, and others. Milo worked for three tech companies, two banks, and a US Senator before retiring at age nineteen to work on his book and teach math in New York, China, and Brazil. He is currently pursuing a Ph.D. in Philosophy from Columbia University, and turning his attention toward TK SUBJECT. PERSONAL JOKE TK [something like "Milo is equally as versed in FUN SUBJECT TK as he is in math and philosophy, so feel free to send him emails about any of the three." -- would like to end on something that humanizes you and makes your socially adjusted nature shine].</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const navUl = document.querySelector('nav ul');
+
+        hamburger.addEventListener('click', () => {
+            navUl.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Milo Updates</title>
+    <link rel="stylesheet" href="milo_styles.css">
+</head>
+<body>
+    <nav>
+        <h1><a href="index.html">Milo Beckman</a></h1>
+        <div class="hamburger">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <ul>
+            <li><a href="index.html">About</a></li>
+            <li><a href="milo_book.html">Math Without Numbers</a></li>
+            <li><a href="milo_writing.html">Writing</a></li>
+            <li><a href="milo_interviews.html">Interviews & Press</a></li>
+            <li><a href="milo_more.html">More Stuff</a></li>
+            <li><a href="updates.html" class="active">Updates</a></li>
+        </ul>
+    </nav>
+    <main>
+        <div class="content-wrapper">
+            <div class="text-section">
+                <header>
+                    <h1>Milo Updates</h1>
+                </header>
+                <p>Sign up for updates on new releases, events, and other news.</p>
+                <form id="signup-form">
+                    <div class="form-group">
+                        <label for="first_name">First Name</label>
+                        <input type="text" id="first_name" name="first_name" class="required" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" id="last_name" name="last_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" class="required email" required>
+                    </div>
+                    <div class="clear"><input type="submit" value="Subscribe" class="button"></div>
+                </form>
+            </div>
+        </div>
+    </main>
+    <div id="success-lightbox" class="lightbox" style="display:none;">
+        <div class="lightbox-content">
+            <span class="close-button">&times;</span>
+            <h2>Success!</h2>
+            <p>You have been successfully subscribed to our updates.</p>
+        </div>
+    </div>
+    <script>
+        const hamburger = document.querySelector('.hamburger');
+        const navUl = document.querySelector('nav ul');
+
+        hamburger.addEventListener('click', () => {
+            navUl.classList.toggle('active');
+        });
+
+        const form = document.getElementById('signup-form');
+        const successLightbox = document.getElementById('success-lightbox');
+        const closeButton = document.querySelector('#success-lightbox .close-button');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const submitButton = form.querySelector('input[type="submit"]');
+            const originalButtonText = submitButton.value;
+            submitButton.value = 'Subscribing...';
+            submitButton.disabled = true;
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            // IMPORTANT: Replace with your actual Worker URL after deployment
+            // Example: https://milo-email-signup.YOUR-SUBDOMAIN.workers.dev/api/signup
+            const WORKER_URL = 'YOUR_WORKER_URL_HERE/api/signup';
+
+            try {
+                const response = await fetch(WORKER_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    successLightbox.style.display = 'flex';
+                    form.reset();
+                } else {
+                    alert(result.error || 'An error occurred. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            } finally {
+                submitButton.value = originalButtonText;
+                submitButton.disabled = false;
+            }
+        });
+
+        closeButton.addEventListener('click', () => {
+            successLightbox.style.display = 'none';
+        });
+
+        successLightbox.addEventListener('click', (e) => {
+            if (e.target !== successLightbox.querySelector('.lightbox-content') && !successLightbox.querySelector('.lightbox-content').contains(e.target)) {
+                successLightbox.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

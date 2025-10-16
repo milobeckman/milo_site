@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Admin Panel - Email Signups</title>
+	<link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+	<div class="container">
+		<header class="panel-header">
+			<h1>Email Signups Admin Panel</h1>
+			<button onclick="logout()" class="btn-secondary">Logout</button>
+		</header>
+
+		<div class="stats">
+			<div class="stat-box">
+				<div class="stat-number" id="total-count">0</div>
+				<div class="stat-label">Total Signups</div>
+			</div>
+		</div>
+
+		<div class="controls">
+			<input type="search" id="searchInput" placeholder="Search by name or email...">
+			<button onclick="exportCSV()" class="btn-primary">Export to CSV</button>
+			<button onclick="refreshData()" class="btn-secondary">Refresh</button>
+		</div>
+
+		<div id="loading" class="loading">Loading signups...</div>
+		<div id="error" class="error" style="display: none;"></div>
+
+		<table id="signupsTable" style="display: none;">
+			<thead>
+				<tr>
+					<th onclick="sortTable(0)">ID ↕</th>
+					<th onclick="sortTable(1)">First Name ↕</th>
+					<th onclick="sortTable(2)">Last Name ↕</th>
+					<th onclick="sortTable(3)">Email ↕</th>
+					<th onclick="sortTable(4)">Subscribed Date ↕</th>
+				</tr>
+			</thead>
+			<tbody id="signupsBody">
+			</tbody>
+		</table>
+
+		<div id="no-results" class="no-results" style="display: none;">
+			No signups found
+		</div>
+	</div>
+
+	<script>
+		let signupsData = [];
+		let sortDirection = {};
+
+		// Load signups on page load
+		document.addEventListener('DOMContentLoaded', () => {
+			loadSignups();
+		});
+
+		async function loadSignups() {
+			const loading = document.getElementById('loading');
+			const error = document.getElementById('error');
+			const table = document.getElementById('signupsTable');
+			const noResults = document.getElementById('no-results');
+
+			loading.style.display = 'block';
+			error.style.display = 'none';
+			table.style.display = 'none';
+			noResults.style.display = 'none';
+
+			try {
+				const response = await fetch('/admin-panel-xyz/api/signups', {
+					credentials: 'include',
+				});
+
+				if (response.status === 401) {
+					window.location.href = '/admin-panel-xyz';
+					return;
+				}
+
+				if (!response.ok) {
+					throw new Error('Failed to load signups');
+				}
+
+				const data = await response.json();
+				signupsData = data.signups || [];
+
+				loading.style.display = 'none';
+
+				if (signupsData.length === 0) {
+					noResults.style.display = 'block';
+				} else {
+					table.style.display = 'table';
+					renderSignups(signupsData);
+				}
+
+				document.getElementById('total-count').textContent = signupsData.length;
+
+			} catch (err) {
+				loading.style.display = 'none';
+				error.textContent = 'Error loading signups: ' + err.message;
+				error.style.display = 'block';
+			}
+		}
+
+		function renderSignups(signups) {
+			const tbody = document.getElementById('signupsBody');
+			tbody.innerHTML = '';
+
+			signups.forEach(signup => {
+				const row = document.createElement('tr');
+				row.setAttribute('data-search', `${signup.first_name} ${signup.last_name} ${signup.email}`.toLowerCase());
+
+				row.innerHTML = `
+					<td>${escapeHTML(signup.id)}</td>
+					<td>${escapeHTML(signup.first_name)}</td>
+					<td>${escapeHTML(signup.last_name)}</td>
+					<td>${escapeHTML(signup.email)}</td>
+					<td>${formatDate(signup.created_at)}</td>
+				`;
+
+				tbody.appendChild(row);
+			});
+		}
+
+		function escapeHTML(str) {
+			const div = document.createElement('div');
+			div.textContent = String(str);
+			return div.innerHTML;
+		}
+
+		function formatDate(dateString) {
+			const date = new Date(dateString);
+			return date.toLocaleString();
+		}
+
+		// Search functionality
+		document.getElementById('searchInput').addEventListener('input', function(e) {
+			const searchTerm = e.target.value.toLowerCase();
+			const rows = document.querySelectorAll('#signupsTable tbody tr');
+
+			let visibleCount = 0;
+			rows.forEach(row => {
+				const searchData = row.getAttribute('data-search');
+				if (searchData && searchData.includes(searchTerm)) {
+					row.style.display = '';
+					visibleCount++;
+				} else if (searchData) {
+					row.style.display = 'none';
+				}
+			});
+
+			document.getElementById('no-results').style.display = visibleCount === 0 ? 'block' : 'none';
+			document.getElementById('signupsTable').style.display = visibleCount === 0 ? 'none' : 'table';
+		});
+
+		// Sort table
+		function sortTable(columnIndex) {
+			const direction = sortDirection[columnIndex] || 'asc';
+			const newDirection = direction === 'asc' ? 'desc' : 'asc';
+			sortDirection = { [columnIndex]: newDirection };
+
+			const sortedData = [...signupsData].sort((a, b) => {
+				const keys = ['id', 'first_name', 'last_name', 'email', 'created_at'];
+				const key = keys[columnIndex];
+
+				let aVal = a[key];
+				let bVal = b[key];
+
+				if (key === 'id') {
+					aVal = parseInt(aVal);
+					bVal = parseInt(bVal);
+				}
+
+				if (aVal < bVal) return newDirection === 'asc' ? -1 : 1;
+				if (aVal > bVal) return newDirection === 'asc' ? 1 : -1;
+				return 0;
+			});
+
+			renderSignups(sortedData);
+		}
+
+		// Export CSV
+		function exportCSV() {
+			window.location.href = '/admin-panel-xyz/export';
+		}
+
+		// Refresh data
+		function refreshData() {
+			loadSignups();
+		}
+
+		// Logout
+		function logout() {
+			// Clear credentials by trying to authenticate with wrong password
+			fetch('/admin-panel-xyz', {
+				headers: {
+					'Authorization': 'Basic ' + btoa('admin:wrong')
+				}
+			}).finally(() => {
+				window.location.href = '/admin-panel-xyz';
+			});
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+# Wrangler
+.wrangler/
+.dev.vars
+
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo

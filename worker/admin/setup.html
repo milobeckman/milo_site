@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Admin Setup - Milo Email Signups</title>
+	<link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+	<div class="setup-container">
+		<div class="setup-box">
+			<h1>Admin Setup</h1>
+			<div id="message" class="message" style="display: none;"></div>
+			<div class="info">
+				<strong>First Time Setup:</strong><br>
+				Set your admin password. This can only be done once. Make sure to save it securely!
+			</div>
+			<form id="setup-form">
+				<div class="form-group">
+					<label for="setup_password">Admin Password</label>
+					<input type="password" id="setup_password" name="setup_password" placeholder="Minimum 8 characters" required minlength="8">
+				</div>
+				<button type="submit" class="btn-primary">Set Admin Password</button>
+			</form>
+		</div>
+	</div>
+
+	<script>
+		const form = document.getElementById('setup-form');
+		const messageDiv = document.getElementById('message');
+
+		form.addEventListener('submit', async (e) => {
+			e.preventDefault();
+
+			const submitButton = form.querySelector('button[type="submit"]');
+			const originalButtonText = submitButton.textContent;
+			submitButton.textContent = 'Setting up...';
+			submitButton.disabled = true;
+
+			const formData = new FormData(form);
+
+			try {
+				const response = await fetch('/admin-panel-xyz', {
+					method: 'POST',
+					body: formData,
+				});
+
+				const text = await response.text();
+
+				if (text.includes('successfully')) {
+					showMessage('Password set successfully! Redirecting to login...', 'success');
+					setTimeout(() => {
+						window.location.href = '/admin-panel-xyz';
+					}, 2000);
+				} else {
+					showMessage('Password must be at least 8 characters', 'error');
+					submitButton.textContent = originalButtonText;
+					submitButton.disabled = false;
+				}
+			} catch (error) {
+				console.error('Error:', error);
+				showMessage('An error occurred. Please try again.', 'error');
+				submitButton.textContent = originalButtonText;
+				submitButton.disabled = false;
+			}
+		});
+
+		function showMessage(text, type) {
+			messageDiv.textContent = text;
+			messageDiv.className = `message ${type}`;
+			messageDiv.style.display = 'block';
+		}
+	</script>
+</body>
+</html>

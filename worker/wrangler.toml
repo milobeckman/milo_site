@@ -1,0 +1,31 @@
+# Wrangler Configuration for Milo Email Signup Worker
+# See: https://developers.cloudflare.com/workers/wrangler/configuration/
+
+name = "milo-email-signup"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+# Rules for importing HTML and CSS files as text
+[[rules]]
+type = "Text"
+globs = ["**/*.html", "**/*.css"]
+fallthrough = true
+
+# D1 Database Binding
+# After creating your D1 database, replace the database_id below
+[[d1_databases]]
+binding = "DB"
+database_name = "milo-signups-db"
+database_id = "YOUR_DATABASE_ID_HERE"  # Replace with actual database ID after creation
+
+# Worker Settings
+# workers_dev = true  # Enable for testing on *.workers.dev subdomain
+
+# Custom Domain (Optional - configure after deployment)
+# routes = [
+#   { pattern = "yourdomain.com/api/*", zone_name = "yourdomain.com" }
+# ]
+
+# Environment Variables (Optional)
+# [env.production]
+# name = "milo-email-signup-prod"
